@@ -1,0 +1,121 @@
+-- COISSARD Kévin Année Spéciale
+-- TP 1 
+
+create table emp as select * from scott.emp;
+create table dept as select * from scott.dept;
+create table salgrade as select * from scott.salgrade;
+commit; 
+
+-- Question 1
+select distinct job from emp;
+
+-- QUESTION 2
+select ename, job, sal from emp where sal >2000;
+
+-- QUESTION 3
+select ename from emp where job='MANAGER' or job='PRESIDENT';
+
+-- QUESTION 4
+select ename from emp where sal>1200 and sal<1400;
+
+-- QUESTION 5
+select ename from emp where job='CLERK' or job='ANALYST' or job='SALESMAN';
+
+-- QUESTION 6
+select ename from emp where ename like 'M%';
+
+-- QUESTION 7
+select ename from emp where ename like '____N';
+
+-- QUESTION 8
+select ename from emp where ename not like '_____';
+
+-- QUESTION 9
+select ename from emp where comm is NULL;
+
+-- QUESTION 10
+-- Partie 1
+select ename, sal from emp where deptno=30 order by sal asc;
+-- Partie 2
+select ename, sal from emp where deptno=30 order by sal desc;
+
+-- QUESTION 11
+select ename, sal, job from emp where deptno=30 order by job asc, sal desc ;
+
+-- QUESTION 12
+select ename, comm from emp order by comm asc;
+
+-- QUESTION 13
+select ename, comm from emp order by comm desc;
+
+-- QUESTION 14
+select dname from emp, dept where emp.deptno=dept.deptno and ename='ALLEN';
+
+-- QUESTION 15 et 16 ignorées
+
+-- QUESTION 17
+select dname from dept where deptno not in (select deptno from emp);
+
+-- QUESTION 18
+select emp.*, dname from emp, dept 
+where emp.deptno=dept.deptno and loc='CHICAGO';
+
+-- QUESTION 19
+select A.ename, A.sal, B.ename, B.sal from emp A, emp B
+where A.mgr=B.empno
+and A.sal>B.sal;
+
+-- QUESTION 20
+select B.ename, B.sal from emp A, emp B
+where A.ename='JONES'
+and B.sal>A.sal;
+
+-- QUESTION 21
+select ename, grade from emp, salgrade;
+
+-- QUESTION 22
+select ename, job from emp 
+where job = (select job from emp where ename='JONES');
+
+-- QUESTION 23
+select empno, ename from emp where sal > (select min (sal) from emp where deptno='30');
+
+-- QUESTION 24
+select empno, ename from emp where sal > (select max (sal) from emp where deptno='30');
+
+-- QUESTION 25
+select B.ename, B.empno, B.job from emp A, emp B
+where A.deptno=30 and B.deptno=10
+and A.job=B.job;
+
+
+-- QUESTION 26
+select ename, job, sal from emp 
+where ename !='FORD'
+and job =(select job from emp where ename='FORD');
+
+
+-- QUESTION 27
+select ename, job, deptno
+from emp
+where (ename != 'JONES' and job =(select job from emp where ename ='JONES'))
+or (ename != 'FORD' and sal >=(select sal from emp where ename='FORD'))
+order by job asc, sal desc;
+
+
+-- QUESTION 28
+select ename from emp 
+where deptno=10 
+and job in (select job from emp,dept where emp.deptno=dept.deptno and dname='SALES');
+
+
+-- QUESTION 29
+select ename, empno, loc from emp, dept
+where emp.deptno=dept.deptno 
+and job = (select job from emp where ename='ALLEN')
+order by ename asc;
+
+
+-- QUESTION 30
+select ename from emp, (select deptno, avg(sal) as salmoyen from emp group by deptno) moyenne
+where emp.deptno=moyenne.deptno and sal>salmoyen;

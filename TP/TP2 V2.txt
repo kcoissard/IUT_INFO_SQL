@@ -1,0 +1,55 @@
+-- TP2 SQL v2
+-- Q1
+select ename, job, sal, decode(comm, null, 0, comm), (sal+comm) as sal_et_comm from emp where deptno=30;
+
+--Q2
+select (deptno*deptno) as deptnocarre, (deptno*deptno*deptno) as deptnocube from emp;
+select power(deptno, 2), power(deptno, 3) from emp;
+
+select (sal/22) as sal_journalier, round(sal/22,2) as sal_penny, round(sal/22) as sal_arrondi from emp;
+
+--Q3
+select round(sal/22,2) as sal_j_penny, 
+round(sal/22/8,2)
+as sal_j_h_penny 
+from emp where deptno=30;
+
+--Q4
+select dname || ' - ' || loc from dept;
+
+--Q5
+select ename, decode(job, 'CLERK', 1, 'MANAGER', 3, 'PRESIDENT', 5, 2) as numjob from emp;
+
+--Q6
+select decode(deptno, 10, job, ename) as liste_emp from emp;
+
+--Q7
+select LPAD(dname,5) from dept;
+
+--Q8
+select UPPER(ename) from emp;
+select LOWER(ename) from emp;
+
+--Q9
+select INSTR(ename, 'R') from emp;
+
+--Q10
+select LENGTH(dname) from dept;
+
+--Q11
+select ename, sal, RPAD('$', round(sal/100),'$') as Histogramme from emp;
+
+--Q12
+select ename from emp where deptno=&x;
+
+--Q13
+select ename, job, to_char(hiredate, 'DAY DD MONTH YYYY')as date_embauche from emp where deptno=20;
+
+--Q14
+select ename from emp where hiredate between '04/01/1981' and '15/04/1981' order by hiredate asc;
+
+--Q15
+select max(sal) as sal_max, min(sal) as sal_min, max(sal)-min(sal) as diffsalmaxmin from emp;
+
+--Q16
+select max(length(dname)) from dept;

@@ -1,0 +1,105 @@
+create table emp as select * from scott.emp;
+create table dept as select * from scott.dept;
+create table salgrade as select * from scott.salgrade;
+commit; 
+
+--1
+select distinct job from emp;
+
+--2
+select ename, job, sal as gains from emp where deptno=20 and sal>2000;
+
+--3
+select ename from emp where upper(job)='MANAGER' or upper(job)='PRESIDENT';
+
+--4
+select ename from emp where sal between 1200 and 1400;
+
+--5
+select ename from emp where job='CLERK' or job='ANALYST' or job='SALESMAN';
+
+--6
+select ename from emp where ename like 'M%';
+
+--7
+select ename from emp where ename like '____N';
+
+--8
+select ename from emp where ename not like '_____';
+
+--9
+select ename from emp where comm is NULL;
+
+--10
+select ename from emp where deptno=30 order by sal asc;
+select ename from emp where deptno=30 order by sal desc;
+
+--11
+select ename, job, sal from emp where deptno=30 order by job asc, sal desc;
+
+--12
+select ename from emp where comm IS NOT NULL order by comm  asc;
+
+--13
+select ename from emp where comm IS NOT NULL order by comm desc;
+
+--14
+select deptno from emp where ename='ALLEN';
+
+--15
+select * from emp, dept;
+
+--17
+select dname from dept where deptno not in ( select deptno from emp);
+
+--18
+select emp.*, dname from emp, dept where emp.deptno=dept.deptno and UPPER(dept.loc)='CHICAGO';
+
+
+--19
+select emp1.ename, emp1.sal, emp2.ename, emp2.sal from emp emp1, emp emp2
+where emp1.mgr=emp2.empno
+and emp2.sal<emp1.sal;
+
+--20
+select emp1.ename, emp1.sal, emp2.ename, emp2.sal from emp emp1, emp emp2
+where emp2.ename='JONES'
+and emp1.sal>emp2.sal;
+
+--21
+select grade, ename from salgrade, emp where emp.sal between salgrade.losal and salgrade.hisal;
+
+--22
+select emp1.ename, emp1.job, emp2.ename, emp2.job from emp emp1, emp emp2
+where emp2.ename='JONES'
+and emp1.job=emp2.job;
+
+--23
+select distinct ename, deptno, sal from emp where deptno !=30 and sal > (select min(sal) from emp where deptno=30);
+
+--24
+select distinct ename, deptno, sal from emp where sal > (select max(sal) from emp where deptno=30);
+
+--25
+select emp1.ename, emp1.deptno, emp2.ename, emp2.deptno from emp emp1, emp emp2
+where emp2.deptno=30 and emp1.deptno=10
+and emp1.job=emp2.job;
+
+--26
+select ename, job, sal from emp where job like(select job from emp where ename='FORD');
+
+--27
+select ename, job, deptno from emp where job like(select job from emp where ename='JONES') 
+or sal>=(select sal from emp where ename='FORD') order by sal desc;
+
+--28
+select ename from emp where deptno=10
+and job in 
+(select emp.job from emp, dept where emp.deptno=dept.deptno and dept.dname='SALES');
+
+--29
+select ename from emp, dept where emp.deptno=dept.deptno and dept.loc='CHICAGO' and job like (select job from emp where ename='ALLEN');
+
+--30
+select ename from emp, (select deptno, avg(sal)as salmoyen from emp group by deptno) moyennesal 
+where emp.deptno=moyennesal.deptno and sal>salmoyen;

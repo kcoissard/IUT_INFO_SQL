@@ -1,0 +1,97 @@
+--TP3 V2
+--Q1
+select ename from emp where deptno in(select deptno from emp where job='CLERK');
+
+--Q2
+select ename from emp where deptno=10 
+and job in(select job from emp, dept where
+            emp.deptno=dept.deptno and dept.dname='SALES');
+            
+           
+--Q3
+select ename from emp where job='SALESMAN' order by (comm/sal) asc;
+
+--Q4
+select avg(sal), deptno, job from emp group by deptno, job order by deptno;
+
+--Q5
+select round(avg(sal),2) as salmoy, job from emp
+group by job
+having count (job)>2;
+
+--Q6
+select dname from dept where deptno =
+  (select deptno from emp group by deptno having count(ename)=
+    (select max(count(ename)) from emp group by deptno));
+    
+    SELECT ename, CASE job WHEN 'PRESIDENT' THEN 1 WHEN 'MANAGER' THEN 2 ELSE 3 END as Niveau FROM emp;
+
+
+
+-- TP3 v2
+--Q6 
+      
+    select dname from dept where deptno =
+     (select deptno 
+     from emp 
+     group by deptno 
+     having count(*) =
+     ( select max(count(*)) from emp group by deptno));
+     
+--Q7
+select deptno from emp, salgrade 
+where emp.sal between salgrade.losal and salgrade.hisal
+    and  salgrade.grade 
+  = all (select grade from salgrade);
+      
+      
+     select deptno from ( select ename, grade, deptno from emp, salgrade 
+      where emp.sal 
+      between salgrade.losal and salgrade.hisal ) toto, salgrade  
+      where salgrade.grade 
+  = all (select grade from salgrade);
+
+
+
+
+--Q8
+
+(select ename, grade, deptno from emp, salgrade where emp.sal between salgrade.losal and salgrade.hisal) 
+minus
+(select ename, grade, deptno from emp, salgrade where grade!=1 and emp.sal between salgrade.losal and salgrade.hisal) ;
+
+
+
+--Q9
+select distinct job, sal from emp 
+where sal = (select max(sal) from emp) 
+or sal = (select min(sal) from emp);
+
+--Q10
+(select distinct dept.deptno, job from emp, dept)
+minus
+(select distinct  emp.deptno, job from emp)
+order by deptno;
+
+--Q11
+select deptno from emp where not exists (select job from emp where job='MANAGER');
+
+--Q12
+select deptno from emp where job = all(select distinct job from emp);
+
+--Q13
+select avg(sal) as sal_moyen, emp.deptno, job 
+from emp where sal>1000
+group by deptno, job;
+
+--Q14
+select B.ename as Manager, count(A.ename) from emp A, emp B
+where A.mgr=B.empno
+group by B.ename;
+
+--Q15
+select B.ename as Manager, A.ename as employe from emp A, emp B
+where A.mgr=B.empno;
+
+--Q16
+select ename from emp where sal=(select max(sal) from emp);

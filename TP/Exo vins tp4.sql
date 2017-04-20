@@ -1,0 +1,253 @@
+CREATE TABLE PRODUCTEURS
+(   refprod number,
+    nomprod varchar2(12) default 'nom_inconnu',
+    region varchar2(10) default 'r_inconnu',
+    constraint pk_PROODUCTEURS primary key (refprod)
+);
+ 
+ 
+CREATE TABLE VINS
+(   nvins number,
+    nomcru varchar2(10) not null,
+    annee number default 1981,
+    degres number,
+    prix number,
+    constraint pk_VINS primary key (nvins),
+    constraint ck_VINS_annee check (annee > 1980)
+);
+ 
+  
+CREATE TABLE ACHETEURS
+(   numach number,
+    nomach varchar2(10) not null,
+    typbuv varchar2(5) default 'tbuv',
+    constraint pk_ACHETEURS primary key (numach),
+    constraint ck_ACHETEURS_typbuv check (typbuv in ('gros', 'petit', 'moyen'))
+);
+ 
+ 
+CREATE TABLE RECOLTE
+(   nvrec number,
+    refprod number,
+    datrec date,
+    qtrec number default 0000,
+    constraint pk_RECOLTE primary key (nvrec, refprod, datrec),
+    constraint fk_RECOLTE_nvrec foreign key (nvrec) references VINS(nvins),
+    constraint fk_RECOLTE_refprod foreign key (refprod) references PRODUCTEURS(refprod)
+);
+ 
+ 
+ CREATE TABLE ACHATS
+(   nvins number,
+    nachet number not null,
+    qte number default 0001,
+    cpt number,
+    constraint pk_ACHATS_cpt primary key (cpt),
+    constraint fk_ACHATS_nvins foreign key (nvins) references VINS(nvins),
+    constraint ck_ACHATS_qte check (qte > 0)
+);
+ 
+ commit;
+ 
+ drop table AVION;
+ drop table COURS;
+ drop table DEPT;
+ drop table EMP;
+ drop table ENSEIGNANT;
+ drop table ETUDIANT;
+ drop table F;
+ drop table INSCRIT;
+ drop table OBTENU;
+ drop table P;
+ drop table PERSONNE;
+ drop table PILOTE;
+ drop table PREREQUIS;
+ drop table PUF;
+ drop table SALGRADE;
+ drop table U;
+ drop table VOL;
+commit;
+
+
+alter table vins modify nomcru varchar2(10);
+
+INSERT INTO VINS VALUES (1,'St-Amour',1983,11.500,31.00);
+INSERT INTO VINS VALUES (2,'Pomerol',1982,11.600,29.00);
+INSERT INTO VINS VALUES (3,'Chenas',1986,11.300,32.50);
+INSERT INTO VINS VALUES (4,'Gamay',1985,11.400,26.00);
+INSERT INTO VINS VALUES (5,'Riesling',1983,11.900,23.50);
+INSERT INTO VINS VALUES (6,'Meursault',1986,11.200,44.00);
+INSERT INTO VINS VALUES (7,'Sauternes',1984,12.100,51.00);
+INSERT INTO VINS VALUES (8,'Brouilly',1987,12.300,38.00);
+INSERT INTO VINS VALUES (9,'Bergerac',1981,12.500,32.00);
+INSERT INTO VINS VALUES (10,'Apremont',1985,13.200,22.00);
+INSERT INTO VINS VALUES (11,'Muscadet',1988,0.000,22.50);
+INSERT INTO VINS VALUES (12,'Fleurie',1982,11.300,37.00);
+INSERT INTO VINS VALUES (13,'Sylvaner',1985,11.900,26.00);
+INSERT INTO VINS VALUES (14,'Cahors',1988,13.200,19.70);
+
+INSERT INTO acheteurs VALUES (1,'Hardy','gros');
+INSERT INTO acheteurs VALUES (2,'Duchene','moyen');
+INSERT INTO acheteurs VALUES (3,'Bernardin','petit');
+INSERT INTO acheteurs VALUES (4,'Dreyfus','moyen');
+INSERT INTO acheteurs VALUES (5,'Letilleul','petit');
+INSERT INTO acheteurs VALUES (6,'Marino','gros');
+INSERT INTO acheteurs VALUES (7,'Dubois','gros');
+INSERT INTO acheteurs VALUES (8,'Bussy','moyen');
+INSERT INTO acheteurs VALUES (9,'Williams','petit');
+INSERT INTO acheteurs VALUES (10,'Duhameau','gros');
+INSERT INTO acheteurs VALUES (11,'Wolf','petit');
+INSERT INTO acheteurs VALUES (12,'Henriot','moyen');
+INSERT INTO acheteurs VALUES (13,'Richard','moyen');
+INSERT INTO acheteurs VALUES (14,'Thomas','petit');
+INSERT INTO acheteurs VALUES (15,'Larue','gros');
+
+INSERT INTO PRODUCTEURS VALUES (1,'Knock','BEAUJOLAIS');
+INSERT INTO PRODUCTEURS VALUES (2,'Marchand','LOIRE');
+INSERT INTO PRODUCTEURS VALUES (3,'Bouteiller','BODEAUX');
+INSERT INTO PRODUCTEURS VALUES (4,'Smith','SUD-OUEST');
+INSERT INTO PRODUCTEURS VALUES (5,'Delors','ALSACE');
+INSERT INTO PRODUCTEURS VALUES (6,'Wagner','BEAUJOLAIS');
+INSERT INTO PRODUCTEURS VALUES (7,'Lepatre','SAVOIE');
+INSERT INTO PRODUCTEURS VALUES (8,'Martin','BORDEAUX');
+INSERT INTO PRODUCTEURS VALUES (9,'Duchemin','BOURGOGNE');
+INSERT INTO PRODUCTEURS VALUES (10,'Chevalier','BOURGOGNE');
+INSERT INTO PRODUCTEURS VALUES (11,'Bresson','BEAUJOLAIS');
+INSERT INTO PRODUCTEURS VALUES (12,'Ravel','SUD-OUEST');
+INSERT INTO PRODUCTEURS VALUES (13,'Muguet','ALSACE');
+
+
+
+INSERT INTO RECOLTE VALUES (1,1,'15/09/1983',62);
+INSERT INTO RECOLTE VALUES (1,6,'17/09/1983',158);
+INSERT INTO RECOLTE VALUES (2,3,'29/08/1982',25);
+INSERT INTO RECOLTE VALUES (3,11,'05/10/1986',130);
+INSERT INTO RECOLTE VALUES (3,1,'10/10/1986',45);
+INSERT INTO RECOLTE VALUES (3,5,'07/10/1986',94);
+INSERT INTO RECOLTE VALUES (4,9,'26/10/1985',148);
+INSERT INTO RECOLTE VALUES (4,10,'22/10/1985',45);
+INSERT INTO RECOLTE VALUES (5,5,'21/08/1983',50);
+INSERT INTO RECOLTE VALUES (5,13,'21/08/1983',110);
+INSERT INTO RECOLTE VALUES (6,9,'30/08/1986',30);
+INSERT INTO RECOLTE VALUES (6,10,'16/08/1986',135);
+INSERT INTO RECOLTE VALUES (7,3,'05/09/1984',120);
+INSERT INTO RECOLTE VALUES (7,8,'11/09/1984',30);
+INSERT INTO RECOLTE VALUES (8,11,'20/09/1987',100);
+INSERT INTO RECOLTE VALUES (8,11,'23/09/1987',62);
+INSERT INTO RECOLTE VALUES (9,4,'23/09/1981',90);
+INSERT INTO RECOLTE VALUES (9,12,'23/09/1981',75);
+INSERT INTO RECOLTE VALUES (10,7,'02/09/1985',11);
+INSERT INTO RECOLTE VALUES (11,2,'01/01/1981',0);
+INSERT INTO RECOLTE VALUES (12,6,'02/10/1982',45);
+INSERT INTO RECOLTE VALUES (13,5,'19/10/1985',93);
+
+commit;
+
+CREATE SEQUENCE ncpt
+    INCREMENT by 1
+    START with 1;
+
+
+INSERT INTO ACHATS VALUES (1, 9, 12, 0);
+INSERT INTO ACHATS VALUES (1, 4, 7, ncpt.NEXTVAL);
+INSERT INTO ACHATS VALUES (1, 1, 10, nCPT.NEXTVAL);
+INSERT INTO ACHATS VALUES (1, 5, 12, nCPT.NEXTVAL);
+INSERT INTO ACHATS VALUES (1, 6, 9, nCPT.NEXTVAL);
+INSERT INTO ACHATS VALUES (2, 8, 5, nCPT.NEXTVAL);
+INSERT INTO ACHATS VALUES (3, 9, 8, nCPT.NEXTVAL);
+INSERT INTO ACHATS VALUES (3, 3, 15, nCPT.NEXTVAL);
+INSERT INTO ACHATS VALUES (3, 10, 24, nCPT.NEXTVAL);
+INSERT INTO ACHATS VALUES (4, 1, 9, nCPT.NEXTVAL);
+INSERT INTO ACHATS VALUES (4, 6, 8, nCPT.NEXTVAL);
+INSERT INTO ACHATS VALUES (4, 6, 8, nCPT.NEXTVAL);
+INSERT INTO ACHATS VALUES (4, 4, 48, nCPT.NEXTVAL);
+INSERT INTO ACHATS VALUES (5, 11, 4, nCPT.NEXTVAL);
+INSERT INTO ACHATS VALUES (6, 15, 4,nCPT.NEXTVAL);
+INSERT INTO ACHATS VALUES (6, 6, 12, nCPT.NEXTVAL);
+INSERT INTO ACHATS VALUES (7, 9, 8, nCPT.NEXTVAL);
+INSERT INTO ACHATS VALUES (7, 4, 18, nCPT.NEXTVAL);
+INSERT INTO ACHATS VALUES (7, 11, 24, nCPT.NEXTVAL);
+INSERT INTO ACHATS VALUES (7, 15, 4, nCPT.NEXTVAL);
+INSERT INTO ACHATS VALUES (8, 1, 10, nCPT.NEXTVAL);
+INSERT INTO ACHATS VALUES (8, 1, 10, nCPT.NEXTVAL);
+INSERT INTO ACHATS VALUES (9, 10, 12, nCPT.NEXTVAL);
+INSERT INTO ACHATS VALUES (9, 6, 9, nCPT.NEXTVAL);
+INSERT INTO ACHATS VALUES (11, 3, 15, nCPT.NEXTVAL);
+INSERT INTO ACHATS VALUES (12, 2, 4, nCPT.NEXTVAL);
+INSERT INTO ACHATS VALUES (12, 4, 4, nCPT.NEXTVAL);
+INSERT INTO ACHATS VALUES (13, 9, 12, nCPT.NEXTVAL);
+
+commit;
+
+delete from achats; -- A retenir
+drop sequence cpt; -- A retenir
+
+-- QUESTION 3.1
+select * from VINS order by NOMCRU asc;
+
+-- QUESTION 3.2
+select distinct REGION from PRODUCTEURS;
+
+-- QUESTION 3.3
+select * from PRODUCTEURS where REGION='SAVOIE'or REGION='BEAUJOLAIS';
+
+-- QUESTION 3.4
+select NOMACH as SOBRE from ACHETEURS where TYPBUV='petit';
+
+-- QUESTION 3.5
+select NVINS as VIN, NACHET from ACHATS order by VIN asc, NACHET desc;
+
+-- QUESTION 3.6
+create table JEUNE as select NOMCRU, DEGRES from VINS where ANNEE>1985;
+
+-- QUESTION 4.1
+select NUMACH from ACHETEURS where
+exists(select * from VINS, ACHATS where VINS.PRIX > 30 and ACHATS.NVINS=VINS.NVINS and ACHATS.NACHET=ACHETEURS.NUMACH);
+
+-- QUESTION 4.2
+select VIN.NOMCRU, PROD.REGION from VIN, PROD where (select SUM(RECOLTE.QTREC) 
+from RECOLTE where RECOLTE.REFPROD=PROD.REFPROD and RECOLTE.NVREC=VIN.NVIN) > 100;
+
+-- QUESTION 4.3
+select distinct VINS.NOMCRU from VINS, RECOLTE, PRODUCTEURS 
+where VINS.NVINS=RECOLTE.NVREC and RECOLTE.REFPROD=PRODUCTEURS.REFPROD and PRODUCTEURS.REGION='BOURGOGNE';
+
+-- QUESTION 4.4
+select COUNT (*) from ACHETEURS where TYPBUV='moyen';
+
+-- QUESTION 4.5
+select COUNT(*), SUM(QTE) from (select * from ACHATS where NVINS=7);
+
+-- QUESTION 4.6
+select SUM(ACHATS.QTE * VINS.PRIX) from ACHETEURS, ACHATS, VINS
+where ACHETEURS.NOMACH='Hardy' and ACHETEURS.NUMACH=ACHATS.NACHET and ACHATS.NVINS=VINS.NVINS;
+
+-- QUESTION 4.7
+select AVG(VINS.PRIX) from VINS, ACHATS where VINS.NVINS=ACHATS.NVINS  and ACHATS.NACHET=5;
+
+-- QUESTION 4.8 
+select NOMPROD from PRODUCTEURS, RECOLTE where PRODUCTEURS.REFPROD=RECOLTE.REFPROD and QTREC>=45;
+
+-- QUESTION 4.9
+select NACHET
+from ACHATS
+where NVINS in (1,7,12)
+group by NACHET
+having COUNT(distinct NVINS)=3;
+
+-- QUESTION 4.10
+select NVINS from VINS
+minus select NVINS from ACHATS;
+
+-- QUESTION 4.11
+select distinct VINS.NOMCRU from VINS, ACHATS, ACHETEURS
+where VINS.ANNEE < 1984 and VINS.NVINS=ACHATS.NVINS and ACHATS.NACHET=ACHETEURS.NUMACH and ACHETEURS.TYPBUV!='petit';
+
+
+-- QUESTION 4.12
+select NOMACH from ACHETEURS where NUMACH 
+in(select NACHET from ACHATS group by NACHET having SUM(QTE) > (select AVG(SUM(QTE)) from ACHATS group by NACHET));
+
+-- QUESTION 4.13
+select ACHETEURS.NUMACH from ACHETEURS where not exists
+(select * from ACHATS, VINS where ACHATS.NACHET=ACHETEURS.NUMACH and ACHATS.NVINS=VINS.NVINS and VINS.NOMCRU='St-Amour');

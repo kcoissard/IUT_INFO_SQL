@@ -1,0 +1,53 @@
+-- TP 2 ASPE COISSARD Kévin
+-- 13/10/2015
+
+-- QUESTION 1
+select ename, job, sal, decode(comm, null, 0, comm), decode (sal+comm, null, 0, sal+comm) as "total_compensation" from emp where deptno=30;
+
+-- QUESTION 2
+-- Partie 1 :
+select power(deptno, 2), power(deptno, 3) from dept;
+-- Partie 2 :
+select sal/22 as salaire_journalier, round(sal/22, 2) as sal_j_arrondi, round(sal/22) as sal_j_arr_doll from emp where deptno=30;
+
+-- QUESTION 3
+select round(sal/22,2) as sal_journalier, round (sal/22/8,2) as sal_horaire from emp where deptno=30;
+
+-- QUESTION 4
+select dname || ' - ' || loc from dept;
+
+-- QUESTION 5
+select ename, decode(job, 'CLERK', 1, 'MANAGER', 3, 'PRESIDENT', 5, 2) as valjob from emp;
+
+-- QUESTION 6
+select ename, decode(deptno, '10', job, ename) as new_ename from emp;
+
+-- QUESTION 7
+select LPAD(dname,5) from dept;
+
+-- QUESTION 8
+select UPPER(ename), LOWER(ename) from emp;
+
+-- QUESTION 9
+select INSTR(ename, 'R') as rang_r from emp;
+
+-- QUESTION 10
+select LENGTH(dname) as longueur_dname from dept;
+
+-- QUESTION 11
+select ename, sal, RPAD('$', round(sal/100),'$') as Histogramme from emp;
+
+-- QUESTION 12
+select ename from emp where deptno=&x;
+
+-- QUESTION 13
+select ename, job,to_char(hiredate, 'DAY DD MONTH YYYY') as date_embauche from emp where deptno=20;
+
+-- QUESTION 14
+select ename from emp where hiredate <= '15-04-1981' and hiredate >= '04-01-1981' order by hiredate asc;
+
+-- QUESTION 15
+select max(sal) as maxsalaire, min(sal) as minsalaire, max(sal)-min(sal) as diffsalaire from emp;
+
+-- QUESION 16
+select max(lenght(dname)) as " Longueur caarac de nom de departement 'dname'" from dept;

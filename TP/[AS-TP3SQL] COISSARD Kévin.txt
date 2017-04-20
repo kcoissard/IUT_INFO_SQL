@@ -1,0 +1,102 @@
+-- TP 3 - ASPE
+-- 03/11/15
+-- COISSARD Kévin
+-- p1207997
+
+
+-- QUESTION 1
+select ename from emp 
+where deptno 
+in (select deptno from emp where job='CLERK');
+
+-- QUESTION 2
+select ename from emp
+where deptno=10
+and job in (select distinct job from emp, dept
+            where emp.deptno=dept.deptno and dname = 'SALES');
+
+-- QUESTION 3
+select ename, comm/sal as ratio_com_sal from emp 
+where job='SALESMAN' 
+order by ratio_com_sal asc;
+
+-- QUESTION 4
+select AVG(sal) "Sal_Moyen", deptno, job from emp 
+group by deptno, job 
+order by job asc;
+
+-- QUESTION 5
+select AVG(sal) "Sal_Moyen", job from emp 
+group by job having count(job) > 2; 
+
+-- QUESTION 6
+select dname from dept where deptno = 
+(select deptno from emp group by deptno having count(ename)= 
+ (select max(count(ename)) as nb_employes from emp group by deptno));
+ 
+ -- QUESTION 7
+ create view empg as select emp.*, grade from emp, salgrade where sal >= losal and sal <= hisal;
+ select deptno from empg group by deptno having count (distinct grade) = (select count(*)from salgrade);
+ 
+ -- QUESTION 8 
+ select distinct deptno from emp, salgrade
+ where emp.sal>=salgrade.losal and emp.sal<=salgrade.hisal and grade=1;
+ 
+ -- QUESITON 9
+select distinct job, sal from emp 
+where sal = ( select max(sal) from emp where job != 'PRESIDENT') 
+or sal = (select min(sal) from emp where job != 'PRESIDENT') ;
+
+ 
+ -- QUESTION 10
+(select distinct dept.deptno, job from emp, dept)
+minus
+(select distinct  emp.deptno, job from emp)
+order by deptno;
+ 
+ -- QUESTION 11
+ select distinct deptno from dept 
+ where not exists (select * from emp where job='MANAGER' and dept.deptno=emp.deptno);
+ 
+ -- QUESTION 12
+ select deptno, dname 
+ from dept 
+ where deptno in 
+        ( select deptno 
+          from emp 
+          group by deptno
+          having count(distinct job) >= all ( select count (*) 
+                                              from emp 
+                                              group by job));
+ 
+ -- QUESTION 13
+ select AVG(sal) "Sal_Moyen", deptno, job from emp 
+ where sal>1000 group by deptno, job;
+ 
+ -- QUESTION 14
+ select B.ename as manager, count(A.ename) as "nombre  Employe" from emp A, emp B
+ where A.mgr=B.empno
+ group by B.ename
+ order by count(A.ename) desc;
+ 
+ -- QUESTION 15
+select B.ename as Manager, A.ename as Employe, A.mgr from emp A, emp B
+where A.mgr=B.empno
+order by B.mgr;
+
+ -- QUESTION 16
+ select ename from emp 
+ where sal= (select max(sal) from emp); -- Commissions à prendre en compte ou pas ? Pas précisé
+ 
+ -- QUESTION 17
+select distinct NU from U
+where U.NU in (select NU from PUF)
+and not exists (select NU from PUF
+                where PUF.N);
+ 
+ -- QUESTION 18
+select NU from U 
+where( not exists( select * from PUF
+                    where( U.NU=PUF.NU
+                              and PUF.NP 
+                              not in( select NP from PUF where NF=1 ) ) ) );
